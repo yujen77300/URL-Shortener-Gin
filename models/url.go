@@ -1,6 +1,6 @@
 package models
 
 type ShortenURL struct {
-	ShortURL string `json:"shortUrl" bson:"short_url"`
+	ShortString string `json:"shortUrl" bson:"short_string"`
 	OriginalURL string `json:"originalUrl" bson:"original_url"`
 }

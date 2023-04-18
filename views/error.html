@@ -1,0 +1,10 @@
+<!DOCTYPE html>
+<html>
+{{ template "top" . }}
+<div class="container mt-5 alert alert-danger" style="display:flex; align-items:center;flex-direction:column">
+  <h2>{{.errorMessage}}</h2>
+  <a href="/">
+    <button type="button" class="btn btn-outline-secondary mt-3">回首頁 重新輸入</button>
+  </a>
+</div>
+{{ template "bottom" . }}

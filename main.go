@@ -20,8 +20,11 @@ func main() {
 
 	router.LoadHTMLGlob("views/*.html")
 
+
 	router.GET("/", handlers.Home)
 	router.POST("/", handlers.Shorten)
+	router.GET("/:shortenString", handlers.Redirect)
+
 
 	router.Run(port)
 

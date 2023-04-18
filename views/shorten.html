@@ -1,0 +1,27 @@
+{{ template "top" . }}
+<div class="container">
+
+  <div style="display: flex;flex-direction:column">
+    <h1 style="margin-bottom: 10px;">Success! Please use this link:</h1>
+    <div class="shortenresult">
+      <a id="copyText" >http://localhost:3000/{{.randomstring}}</a>
+    </div>
+  </div>
+
+  <div style="display: flex;">
+    <button class="btn btn-primary" onclick="copy()" style="margin-right:10px;">Copy</button>
+    <a href=" javascript:history.back()" class="btn btn-secondary">回上一頁</a>
+  </div>
+
+</div>
+
+<script>
+  function copy() {
+    const URL = document.querySelector('#copyText')
+    navigator.clipboard.writeText(URL.href)
+      .then(() => alert('已經複製縮短後的網誌 !'))
+      .catch(error => console.log(error))
+  }
+</script>
+<script src="/javascript/shorten.js"></script>
+{{ template "bottom" . }}
