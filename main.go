@@ -12,7 +12,7 @@ func main() {
 	router := gin.Default()
 	router.Use(gin.Logger())
 	router.Use(gin.Recovery())
-	port := ":3000"
+	port := ":8080"
 
 	router.Static("/css", "./static/css")
 	router.Static("/javascript", "./static/javascript")
