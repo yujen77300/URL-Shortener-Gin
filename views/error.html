@@ -3,6 +3,7 @@
 {{ template "top" . }}
 <div class="container mt-5 alert alert-danger" style="display:flex; align-items:center;flex-direction:column">
   <h2>{{.errorMessage}}</h2>
+  <p>Note: The input URL should include "https://" or "http://"</p>
   <a href="/">
     <button type="button" class="btn btn-outline-secondary mt-3">回首頁 重新輸入</button>
   </a>

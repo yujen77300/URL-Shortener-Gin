@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -15,7 +14,6 @@ import (
 func Redirect(c *gin.Context) {
 	var shortUrl *models.ShortenURL
 	shortenString := c.Param("shortenString")
-	fmt.Println(shortenString)
 	var ctx context.Context
 	Mongoclient, err = mongo.Connect(ctx, models.Mongoconn)
 	defer Mongoclient.Disconnect(ctx)
@@ -28,7 +26,7 @@ func Redirect(c *gin.Context) {
 	urlCollection.FindOne(ctx, query).Decode(&shortUrl)
 	if shortUrl == nil {
 		c.HTML(http.StatusNotFound, "error.html", gin.H{
-			"errorMessage": "Shorten URL not found",
+			"errorMessage": "Shorten URL not found or the original URL is not valid",
 		})
 		return
 	}

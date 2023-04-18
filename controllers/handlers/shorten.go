@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 
@@ -17,6 +16,10 @@ var Mongoclient *mongo.Client
 var err error
 
 func Shorten(c *gin.Context) {
+	var shortUrl *models.ShortenURL
+	var shortString string
+	inputUrl := c.PostForm("inputurl")
+
 	var ctx context.Context
 	Mongoclient, err = mongo.Connect(ctx, models.Mongoconn)
 	defer Mongoclient.Disconnect(ctx)
@@ -28,23 +31,26 @@ func Shorten(c *gin.Context) {
 		log.Fatal("error while trying to ping mongo", err)
 	}
 
-	fmt.Println("mongo connection established")
 	urlCollection := Mongoclient.Database("shortenURL").Collection("urls")
 
-	document := bson.M{
-		"original_url": "https://www.google.com",
-		"short_string": "1qaz2wsx",
+	query := bson.D{bson.E{Key: "original_url", Value: &inputUrl}}
+	urlCollection.FindOne(ctx, query).Decode(&shortUrl)
+	if shortUrl == nil {
+		shortString = models.RandomString(6)
+		document := bson.M{
+			"original_url": inputUrl,
+			"short_string": shortString,
+		}
+		ctx = context.TODO()
+		_, err := urlCollection.InsertOne(ctx, document)
+		if err != nil {
+			log.Fatal("error while inserting a document", err)
+		}
+	} else {
+		shortString = shortUrl.ShortString
 	}
-	ctx = context.TODO()
-	result, err := urlCollection.InsertOne(ctx, document)
-	if err != nil {
-		log.Fatal("error while inserting a document", err)
-	}
-
-	fmt.Println("Inserted a document with ID: ", result.InsertedID)
-
 	c.HTML(http.StatusOK, "shorten.html", gin.H{
-		"randomstring": "Qtesttse",
+		"randomstring": shortString,
 	})
 
 }
